@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alphabet Flipper</title>
+<style>
+    body{
+        background:#111;
+        color:white;
+        font-family:Arial, sans-serif;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        min-height:100vh;
+        margin:0;
+        padding:20px;
+        box-sizing:border-box;
+    }
+    .box{
+        background:#1e1e1e;
+        padding:25px;
+        border-radius:15px;
+        width:500px;
+        max-width:100%;
+        text-align:center;
+        box-shadow:0 0 20px rgba(0,0,0,0.5);
+    }
+    textarea{
+        width:100%;
+        height:140px;
+        border:none;
+        border-radius:10px;
+        padding:12px;
+        font-size:18px;
+        resize:vertical;
+        outline:none;
+        background:#2b2b2b;
+        color:white;
+        box-sizing:border-box;
+        white-space:pre-wrap;
+        overflow-wrap:break-word;
+    }
+    .output{
+        margin-top:20px;
+    }
+    button{
+        margin-top:15px;
+        padding:12px 22px;
+        border:none;
+        border-radius:10px;
+        background:#4f46e5;
+        color:white;
+        font-size:16px;
+        cursor:pointer;
+        transition:0.2s;
+    }
+    button:hover{
+        background:#635bff;
+    }
+    .copied{
+        margin-top:10px;
+        color:#7dff9b;
+        font-size:14px;
+        min-height:20px;
+    }
+</style>
+</head>
+<body>
+<div class="box">
+    <h1>Alphabet Flipper</h1>
+    <textarea id="input" placeholder="Type something..."></textarea>
+    <br>
+    <button onclick="flipText()">Flip & Copy</button>
+    <textarea 
+        class="output" 
+        id="output" 
+        readonly 
+        placeholder="Flipped text will appear here..."
+    ></textarea>
+    <div class="copied" id="copied"></div>
+</div>
+<script>
+async function flipText() {
+    const input = document.getElementById("input").value;
+    let result = "";
+    for (let char of input) {
+        if (char >= 'A' && char <= 'Z') {
+            result += String.fromCharCode(
+                90 - (char.charCodeAt(0) - 65)
+            );
+        }
+        else if (char >= 'a' && char <= 'z') {
+            result += String.fromCharCode(
+                122 - (char.charCodeAt(0) - 97)
+            );
+        }
+        else {
+            result += char;
+        }
+    }
+    document.getElementById("output").value = result;
+    try {
+        await navigator.clipboard.writeText(result);
+        document.getElementById("copied").textContent =
+            "Copied to clipboard!";
+    }
+    catch (err) {
+        document.getElementById("copied").textContent =
+            "Failed to copy.";
+    }
+}
+</script>
+</body>
+</html>
