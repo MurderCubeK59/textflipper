@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Alphabet Flipper</title>
 <link rel="icon" href="icon.png">
+
 <style>
     body{
         background:#111;
@@ -18,6 +19,7 @@
         padding:20px;
         box-sizing:border-box;
     }
+
     .box{
         background:#1e1e1e;
         padding:25px;
@@ -27,6 +29,7 @@
         text-align:center;
         box-shadow:0 0 20px rgba(0,0,0,0.5);
     }
+
     textarea{
         width:100%;
         height:140px;
@@ -42,9 +45,11 @@
         white-space:pre-wrap;
         overflow-wrap:break-word;
     }
+
     .output{
         margin-top:20px;
     }
+
     button{
         margin-top:15px;
         padding:12px 22px;
@@ -56,9 +61,11 @@
         cursor:pointer;
         transition:0.2s;
     }
+
     button:hover{
         background:#635bff;
     }
+
     .copied{
         margin-top:10px;
         color:#7dff9b;
@@ -67,50 +74,95 @@
     }
 </style>
 </head>
+
 <body>
+
 <div class="box">
     <h1>Alphabet Flipper</h1>
-    <textarea id="input" placeholder="Type something..."></textarea>
+
+    <textarea
+        id="input"
+        placeholder="Type something..."
+    ></textarea>
+
     <br>
-    <button onclick="flipText()">Flip & Copy</button>
-    <textarea 
-        class="output" 
-        id="output" 
-        readonly 
+
+    <button onclick="flipText()">
+        Flip & Copy
+    </button>
+
+    <textarea
+        class="output"
+        id="output"
+        readonly
         placeholder="Flipped text will appear here..."
     ></textarea>
+
     <div class="copied" id="copied"></div>
 </div>
+
 <script>
 async function flipText() {
+
     const input = document.getElementById("input").value;
-    let result = "";
+
+    let flipped = "";
+
+    // Flip alphabet (A↔Z, B↔Y, etc.)
     for (let char of input) {
+
+        // Uppercase
         if (char >= 'A' && char <= 'Z') {
-            result += String.fromCharCode(
+
+            flipped += String.fromCharCode(
                 90 - (char.charCodeAt(0) - 65)
             );
+
         }
+
+        // Lowercase
         else if (char >= 'a' && char <= 'z') {
-            result += String.fromCharCode(
+
+            flipped += String.fromCharCode(
                 122 - (char.charCodeAt(0) - 97)
             );
+
         }
+
+        // Other characters
         else {
-            result += char;
+
+            flipped += char;
+
         }
     }
+
+    // Reverse text left-to-right
+    const result = flipped
+        .split("")
+        .reverse()
+        .join("");
+
+    // Show result
     document.getElementById("output").value = result;
+
+    // Copy to clipboard
     try {
+
         await navigator.clipboard.writeText(result);
+
         document.getElementById("copied").textContent =
             "Copied to clipboard!";
+
     }
     catch (err) {
+
         document.getElementById("copied").textContent =
             "Failed to copy.";
+
     }
 }
 </script>
+
 </body>
 </html>
